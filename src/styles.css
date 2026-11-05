@@ -1,0 +1,178 @@
+/* Minimal: system fonts, one accent, thin rules, no shadows. Dark mode
+   follows the OS. The map reads these tokens too (lib/map.js). */
+:root {
+  --bg: #ffffff;
+  --ink: #111111;
+  --muted: #8a8a8a;
+  --line: #e6e6e6;
+  --soft: #f5f5f5;
+  --accent: #e5484d;
+  --good: #1f9d55;
+  --dot: #9a9a9a;
+  --mono: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #111111;
+    --ink: #ededed;
+    --muted: #7a7a7a;
+    --line: #262626;
+    --soft: #1a1a1a;
+    --accent: #ff6369;
+    --good: #3dd68c;
+    --dot: #6b6b6b;
+    color-scheme: dark;
+  }
+}
+
+* { box-sizing: border-box; }
+html, body { margin: 0; height: 100%; }
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font: 14px/1.45 system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+button, input { font: inherit; color: inherit; }
+button {
+  background: none;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  padding: 4px 10px;
+  cursor: pointer;
+}
+button:hover:not(:disabled) { background: var(--soft); }
+button:disabled { opacity: 0.35; cursor: default; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+
+.app { height: 100dvh; display: grid; grid-template-rows: auto 1fr; }
+
+header {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  padding: 0 20px;
+  border-bottom: 1px solid var(--line);
+}
+h1 { margin: 0; font-size: 15px; font-weight: 600; }
+nav { display: flex; gap: 4px; }
+nav button {
+  border: 0;
+  border-radius: 0;
+  padding: 16px 10px 14px;
+  border-bottom: 2px solid transparent;
+  color: var(--muted);
+}
+nav button:hover:not(:disabled) { background: none; color: var(--ink); }
+nav button.on { color: var(--ink); border-bottom-color: var(--ink); }
+
+main { min-height: 0; display: grid; grid-template-columns: 380px 1fr; }
+aside {
+  min-height: 0;
+  overflow-y: auto;
+  border-right: 1px solid var(--line);
+  padding: 16px 20px 32px;
+}
+.map { min-height: 0; }
+
+/* stops */
+.stops { padding-bottom: 16px; margin-bottom: 16px; border-bottom: 1px solid var(--line); }
+.row { display: flex; align-items: center; gap: 6px; }
+.spacer { flex: 1; }
+h3 { margin: 0; font-size: 13px; font-weight: 600; }
+h3 span { color: var(--muted); font-weight: 400; margin-left: 4px; }
+.size { width: 46px; padding: 3px 4px; border: 1px solid var(--line); border-radius: 6px; background: none; text-align: center; }
+.search { position: relative; margin: 10px 0 8px; }
+.search input {
+  width: 100%;
+  padding: 6px 10px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: none;
+  outline: none;
+}
+.search input:focus { border-color: var(--muted); }
+.search ul {
+  position: absolute;
+  z-index: 5;
+  left: 0;
+  right: 0;
+  top: calc(100% + 4px);
+  margin: 0;
+  padding: 4px;
+  list-style: none;
+  background: var(--bg);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+}
+.search ul button { width: 100%; text-align: left; border: 0; }
+.search small { color: var(--muted); margin-left: 4px; }
+.stops ol { margin: 0; padding: 0; list-style: none; font-size: 13px; max-height: 210px; overflow-y: auto; }
+.stops li { display: flex; align-items: center; gap: 8px; }
+.stops .n { width: 18px; text-align: right; color: var(--muted); font-family: var(--mono); font-size: 11px; }
+.stops .name { flex: 1; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.x { border: 0; padding: 0 5px; color: var(--muted); font-size: 14px; line-height: 1.5; }
+.x:hover:not(:disabled) { color: var(--ink); }
+.x:disabled { opacity: 0.2; }
+.stops li { cursor: grab; border-radius: 4px; }
+.stops li.dragging { opacity: 0.4; }
+.stops li:hover { background: var(--soft); }
+.hint, .note { color: var(--muted); font-size: 12.5px; }
+.hint { margin: 8px 0 0; }
+
+/* player */
+.controls { display: flex; align-items: center; gap: 6px; margin-bottom: 16px; }
+.controls .play { min-width: 92px; }
+.controls .link { border: 0; padding: 4px 2px; font-size: 12px; color: var(--muted); text-decoration: underline; text-underline-offset: 3px; }
+.controls .link:hover { background: none; color: var(--ink); }
+.controls input[type='range'] { flex: 1; min-width: 0; accent-color: var(--ink); }
+.count { font-family: var(--mono); font-size: 11px; color: var(--muted); }
+.phase { margin: 0 0 2px; font-family: var(--mono); font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.04em; }
+.player h2 { margin: 0 0 6px; font-size: 17px; font-weight: 600; }
+.text { margin: 0 0 14px; opacity: 0.8; min-height: 4.4em; }
+
+.stats { display: flex; flex-wrap: wrap; gap: 6px 20px; margin: 0 0 14px; }
+.stats dt { font-size: 11px; color: var(--muted); }
+.stats dd { margin: 0; font-family: var(--mono); font-size: 13px; }
+
+.grid { width: 100%; border-collapse: collapse; font-family: var(--mono); font-size: 11.5px; }
+.grid th, .grid td { padding: 3px 6px; text-align: right; border-bottom: 1px solid var(--line); white-space: nowrap; }
+.grid th { color: var(--muted); font-weight: 400; }
+.grid th:first-child, .grid td:first-child { text-align: left; color: var(--muted); }
+.grid tr.dim td { color: var(--muted); }
+.grid tr.focus td { color: var(--accent); }
+.grid tr.mark td { background: var(--soft); }
+.grid td.best { color: var(--good); font-weight: 600; }
+.scroll { overflow-x: auto; }
+.hk th, .hk td { padding: 3px 4px; }
+
+/* map chrome */
+.tip .maplibregl-popup-content {
+  padding: 4px 8px;
+  font-size: 12px;
+  background: var(--ink);
+  color: var(--bg);
+  border-radius: 4px;
+  box-shadow: none;
+}
+.tip .maplibregl-popup-tip { display: none; }
+.maplibregl-ctrl-group { box-shadow: none !important; border: 1px solid var(--line); }
+@media (prefers-color-scheme: dark) {
+  .maplibregl-ctrl-group { background: var(--bg); }
+  .maplibregl-ctrl-icon { filter: invert(0.9); }
+}
+
+/* phones: tabs scroll sideways, map on top, panel below */
+@media (max-width: 760px) {
+  .app { height: auto; display: block; }
+  header { flex-direction: column; align-items: stretch; gap: 0; padding: 10px 14px 0; }
+  nav { overflow-x: auto; }
+  nav button { padding: 12px 10px 10px; white-space: nowrap; }
+  main { display: flex; flex-direction: column-reverse; }
+  .map { height: 45vh; position: sticky; top: 0; z-index: 1; }
+  aside { border-right: 0; padding: 14px; }
+  .stops ol { max-height: none; }
+  button { padding: 7px 12px; }
+}
